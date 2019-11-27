@@ -31,6 +31,6 @@ modules:
 #            - config/*
 #            - runtime/*
 #            - vendor/*
-#            - views/*
+#            - message/*
 #            - web/*
 #            - tests/*
