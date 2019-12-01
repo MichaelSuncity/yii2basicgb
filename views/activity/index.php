@@ -2,11 +2,12 @@
 
 use yii\bootstrap\Html;
 use yii\bootstrap\ActiveForm;
+use yii\helpers\Url;
 
 
 ?>
 
-<h1>Мои события</h1>
+<h1>Список событий</h1>
 
 <?php $form = ActiveForm::begin([
     'action' => '/activity/view',
@@ -25,10 +26,6 @@ use yii\bootstrap\ActiveForm;
 
 <?php ActiveForm::end()?>
 
-<?php $form = ActiveForm::begin([
-    'action' => '/calendar',
-])?>
 
-    <p><?= Html::submitButton('Вернуться в календарь', ['class' => 'btn btn-success']) ?></p>
+<p><?= Html::a('Вернуться в календарь', Url::to(['/calendar']) ) ?></p>
 
-<?php ActiveForm::end()?>
