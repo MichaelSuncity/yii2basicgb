@@ -6,7 +6,9 @@ namespace app\controllers;
 use Yii;
 use app\models\Activity;
 use yii\helpers\ArrayHelper;
+use yii\helpers\VarDumper;
 use yii\web\Controller;
+use yii\web\UploadedFile;
 
 class ActivityController extends Controller
 {
@@ -25,6 +27,9 @@ class ActivityController extends Controller
            'dayStart' => '28.11.2019 г.',
            'dayEnd' => '28.11.2019 г.',
            'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores, aspernatur assumenda at et eveniet exercitationem explicabo facere facilis fugiat hic ipsum iusto labore laudantium neque nisi odio perspiciatis quae qui quibusdam quod rem rerum sit tempore tenetur vel? Facilis magni natus neque porro quaerat quo, recusandae. Amet commodi, consequuntur deleniti deserunt doloribus facilis fuga fugit id ipsam itaque labore magni maiores, nam natus nisi officiis, optio praesentium quam qui quis ratione rem tempora tenetur. Accusamus dignissimos dolore, facere facilis fugit incidunt inventore laudantium mollitia, nam natus nemo officia provident, saepe sunt veniam? Aperiam ipsa minus obcaecati similique. Dolorum, esse, saepe!',
+           'isBlocked' => true,
+           'cycle' => false,
+           'userID' => 1,
        ]);
         return $this->render('view',
             compact('model'));
@@ -39,19 +44,16 @@ class ActivityController extends Controller
 
     public function actionSubmit() {
         $model = new Activity();
-        $model->load(Yii::$app->request->post());
-
-        if ($model->validate()){
-            return $this->redirect(['/activity/result']);
-        } else {
-            return $this->redirect(['/activity/create']);
+        if($model->load(Yii::$app->request->post())) {
+            $model->attachments = UploadedFile::getInstance($model, 'attachments');
+            if ($model->validate()) {
+                return 'Success: ' . VarDumper::export($model->attributes);
+            } else {
+                return 'Failed: ' . VarDumper::export($model->errors);
+            }
         }
+        return 'Activity@Submit';
     }
-
-    public function actionResult() {
-        return 'Thanks';
-    }
-
 
         public function actionArrayHelper() {
         $arr = [
