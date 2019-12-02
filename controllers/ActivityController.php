@@ -5,6 +5,8 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Activity;
+use yii\db\Query;
+use yii\db\QueryBuilder;
 use yii\helpers\ArrayHelper;
 use yii\helpers\VarDumper;
 use yii\web\Controller;
@@ -12,17 +14,33 @@ use yii\web\UploadedFile;
 
 class ActivityController extends Controller
 {
-    public function actionIndex() {
+    public function actionIndex($sort = false) {
     /**
        * $url = Yii::$app->request->url;
        * Yii::$app->session->set('lastPage', $url);
        * var_dump(Yii::$app->session->get('lastPage'));
     */
-    return $this->render('index');
+    /*$db = Yii::$app->db;
+
+    $rows= $db->createCommand('select * from activities')->queryAll();*/
+    $query = new Query();
+    $query
+        ->select('*')
+        ->from('activities');
+
+    if($sort) {
+        $query->orderBy("id desc");
     }
 
-    public function actionView() {
-       $model = new Activity([
+    $rows = $query->all();
+
+    return $this->render('index', [
+        'activities' => $rows
+    ]);
+    }
+
+    public function actionView($id) {
+       /*$model = new Activity([
            'title'  => 'Событие № 1',
            'dayStart' => '28.11.2019 г.',
            'dayEnd' => '28.11.2019 г.',
@@ -30,7 +48,14 @@ class ActivityController extends Controller
            'isBlocked' => true,
            'cycle' => false,
            'userID' => 1,
-       ]);
+       ]);*/
+
+       $db =Yii::$app->db;
+
+       $model = $db->createCommand('select * from activities where id=:id', [
+           ':id' => $id,
+       ])->queryOne();
+
         return $this->render('view',
             compact('model'));
     }
@@ -47,6 +72,9 @@ class ActivityController extends Controller
         if($model->load(Yii::$app->request->post())) {
             $model->attachments = UploadedFile::getInstance($model, 'attachments');
             if ($model->validate()) {
+                $query = new QueryBuilder(Yii::$app->db);
+                $params = [];
+                echo $query->insert('activities', $model->attributes, $params);
                 return 'Success: ' . VarDumper::export($model->attributes);
             } else {
                 return 'Failed: ' . VarDumper::export($model->errors);

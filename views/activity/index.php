@@ -4,18 +4,21 @@ use yii\bootstrap\Html;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 
+/**
+ * @var array $activities;
+ */
 
 ?>
 
 <h1>Список событий</h1>
 
-<?php $form = ActiveForm::begin([
-    'action' => '/activity/view',
-])?>
-
-    <p><?= Html::submitButton('Событие № 1', ['class' => 'btn btn-success']) ?></p>
-
-<?php ActiveForm::end()?>
+<ul>
+<?php foreach ($activities as $item) { ?>
+    <li>
+        <?=Html::a('Событие: ' . "{$item['title']}", Url::to(["/activity/view?id={$item['id']}"]))?>
+    </li>
+<?php } ?>
+</ul>
 
 
 <?php $form = ActiveForm::begin([
