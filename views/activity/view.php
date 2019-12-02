@@ -11,15 +11,16 @@ use yii\helpers\Url;
  * @var Activity $model
 */
 ?>
-    <h1><?= $model->title; ?> от <?= $model->dayStart; ?></h1>
-    <h3>Дата начала события: <?= $model->dayStart; ?></h3>
-    <h3>Дата окончания события: <?= $model->dayEnd; ?></h3>
-    <h3>Пользователь: <?= $model->userID; ?></h3>
-    <h3>Описание: </h3>
-    <p><?= $model->description; ?></p>
-    <p>Повтор: <?= $model->cycle; ?></p>
-    <p>Блокирующее: <?= $model->isBlocked; ?></p>
 
+<h2><?=Html::encode($model['title'])?></h2>
+<h2><?=Html::encode($model['description'])?></h2>
+<ul>
+    <li><strong>Пользователь: </strong><?= $model['userID']?></li>
+    <li><strong>Повтор: </strong><?= $model['cycle']?></li>
+    <li><strong>Блокирующее: </strong><?= $model['isBlocked']?></li>
+    <li><strong>Начало: </strong><?= $model['dayStart']?></li>
+    <li><strong>Окончание: </strong><?= $model['dayEnd']?></li>
+</ul>
 
 <?php $form = ActiveForm::begin([
     'action' => '/activity/create',
@@ -29,6 +30,5 @@ use yii\helpers\Url;
 
 <?php ActiveForm::end()?>
 
-<p><?= Html::a('Вернуться в мои события', Url::to(['/activity/index']) ) ?></p>
-
-<p><?= Html::a('Вернуться в календарь', Url::to(['/calendar']) ) ?></p>
+    <p><?= Html::a('Вернуться в мои события', Url::to(['/activity/index']) ) ?></p>
+    <p><?= Html::a('Вернуться в календарь', Url::to(['/calendar']) ) ?></p>
