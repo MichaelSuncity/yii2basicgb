@@ -7,6 +7,7 @@ use Yii;
 use app\models\Activity;
 use yii\db\Query;
 use yii\db\QueryBuilder;
+use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\helpers\VarDumper;
 use yii\web\Controller;
@@ -14,19 +15,42 @@ use yii\web\UploadedFile;
 
 class ActivityController extends Controller
 {
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class, //ACF
+                'only' => ['index', 'view', 'create'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['admin']
+                    ],
+                ],
+            ],
+        ];
+    }
+
     public function actionIndex($sort = false) {
     /**
        * $url = Yii::$app->request->url;
        * Yii::$app->session->set('lastPage', $url);
        * var_dump(Yii::$app->session->get('lastPage'));
     */
+    /*if (Yii::$app->user->isGuest){
+        return '403 - no no no';
+    }*/
+
+
     /*$db = Yii::$app->db;
 
     $rows= $db->createCommand('select * from activities')->queryAll();*/
-    $query = new Query();
+    /*$query = new Query();
     $query
         ->select('*')
         ->from('activities');
+    */
+    $query = Activity::find();
 
     if($sort) {
         $query->orderBy("id desc");
@@ -70,11 +94,12 @@ class ActivityController extends Controller
     public function actionSubmit() {
         $model = new Activity();
         if($model->load(Yii::$app->request->post())) {
-            $model->attachments = UploadedFile::getInstance($model, 'attachments');
+            //$model->attachments = UploadedFile::getInstance($model, 'attachments');
             if ($model->validate()) {
-                $query = new QueryBuilder(Yii::$app->db);
-                $params = [];
-                echo $query->insert('activities', $model->attributes, $params);
+                $model->save();
+                //$query = new QueryBuilder(Yii::$app->db);
+                //$params = [];
+                //echo $query->insert('activities', $model->attributes, $params);
                 return 'Success: ' . VarDumper::export($model->attributes);
             } else {
                 return 'Failed: ' . VarDumper::export($model->errors);
