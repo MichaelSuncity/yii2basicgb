@@ -9,7 +9,7 @@ use yii\helpers\Url;
  * @var  View $this
  * @var  Activity $model
  */
-
+// $form->field($model, 'attachments[]')->fileInput(['multiple' => true])
 ?>
 
 <h1>Создать/отредактировать событие</h1>
@@ -24,7 +24,6 @@ use yii\helpers\Url;
 <?= $form->field($model, 'description')->textarea(['rows' => 5]) ?>
 <?= $form->field($model, 'cycle')->checkbox() ?>
 <?= $form->field($model, 'isBlocked')->checkbox() ?>
-<?= $form->field($model, 'attachments[]')->fileInput(['multiple' => true]) ?>
 
 <p><?= Html::submitButton('Создать', ['class' => 'btn btn-success']) ?></p>
 

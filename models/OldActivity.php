@@ -3,24 +3,20 @@
 
 namespace app\models;
 
-use yii\db\ActiveRecord;
 
-/**
- * Class Activity
- * @package app\models
- *
- * @property-read  User $user
- *
- */
+use yii\base\Model;
 
-
-class Activity extends ActiveRecord
+class OldActivity extends Model
 {
-
-    public static function tableName()
-    {
-        return 'activities';
-    }
+    /*
+    public $title;
+    public $dayStart;
+    public $dayEnd;
+    public $userID;
+    public $description;
+    public $cycle = false;
+    public $isBlocked = true;
+    public $attachments;
 
 
     public function attributeLabels()
@@ -47,13 +43,9 @@ class Activity extends ActiveRecord
             [['dayStart', 'dayEnd'], 'date', 'format' =>'php:Y-m-d'],
             [['userID'], 'integer'],
             [['cycle', 'isBlocked'], 'boolean'],
-            //[['attachments'], 'file', 'maxFiles' => 5],
+            [['attachments'], 'file', 'maxFiles' => 5],
         ];
     }
-
-    public function getUser()
-    {
-        return $this -> hasOne(User::class, ['id' => 'userID']);
-    }
+*/
 
 }

@@ -5,7 +5,8 @@ use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 
 /**
- * @var array $activities;
+ * @var $this yii\web\View
+ * @var \app\models\Activity[] $activities
  */
 
 ?>
@@ -15,7 +16,7 @@ use yii\helpers\Url;
 <ul>
 <?php foreach ($activities as $item) { ?>
     <li>
-        <?=Html::a('Событие: ' . "{$item['title']}", Url::to(["/activity/view?id={$item['id']}"]))?>
+        <?= var_dump($item->user->username);?>
     </li>
 <?php } ?>
 </ul>
