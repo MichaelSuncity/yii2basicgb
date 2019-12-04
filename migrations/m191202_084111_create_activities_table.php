@@ -5,7 +5,7 @@ use yii\db\Migration;
 /**
  * Handles the creation of table `{{%activities}}`.
  */
-class m191202_053054_create_activities_table extends Migration
+class m191202_084111_create_activities_table extends Migration
 {
     /**
      * {@inheritdoc}
@@ -15,14 +15,24 @@ class m191202_053054_create_activities_table extends Migration
         $this->createTable('activities', [
             'id' => $this->primaryKey(),
             'title' => $this -> string()->notNull(),
-            'dayStart' => $this ->string() ,
+            'dayStart' => $this ->string(),
             'dayEnd' => $this -> string(),
             'userID' => $this -> integer(),
             'description' => $this -> text(),
             'cycle' => $this -> boolean(),
             'isBlocked' => $this -> boolean(),
-            // 'attachments' => '' реляционная связь
         ]);
+
+        $this->addForeignKey(
+            'fk-activity-userID',
+            'activities',
+            'userID',
+            'users',
+            'id',
+            'CASCADE',
+            'CASCADE'
+        );
+
     }
 
     /**
