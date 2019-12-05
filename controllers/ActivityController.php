@@ -91,6 +91,21 @@ class ActivityController extends Controller
         );
      }
 
+    public function actionEdit(int $id = null)
+    {
+        if(!empty($id)){
+            $model = Activity::findOne($id);
+            if($model->load(Yii::$app->request->post()) and $model->validate()){
+                if($model->save()) {
+                    return $this->redirect(["activity/view?id=$model->id"]);
+                }
+            }
+            return $this->render('edit', [
+                'model' => $model
+            ]);
+        }
+    }
+
     public function actionSubmit() {
         $model = new Activity();
         if($model->load(Yii::$app->request->post())) {

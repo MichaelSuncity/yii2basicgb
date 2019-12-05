@@ -12,9 +12,9 @@ use yii\helpers\Url;
 // $form->field($model, 'attachments[]')->fileInput(['multiple' => true])
 ?>
 
-<h1>Создать событие</h1>
+<h1>Редактирование события</h1>
 <?php $form = ActiveForm::begin([
-    'action' => '/activity/submit',
+    'action' => "/activity/edit?id=$model->id",
 ])?>
 
 <?= $form->field($model, 'title')->textInput(['autocomplete' => 'off']) ?>
@@ -25,7 +25,7 @@ use yii\helpers\Url;
 <?= $form->field($model, 'cycle')->checkbox() ?>
 <?= $form->field($model, 'isBlocked')->checkbox() ?>
 
-<p><?= Html::submitButton('Создать', ['class' => 'btn btn-success']) ?></p>
+<p><?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?></p>
 
 <?php ActiveForm::end()?>
 

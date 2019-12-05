@@ -13,13 +13,16 @@ use yii\helpers\Url;
 
 <h1>Список событий</h1>
 
-<ul>
+
 <?php foreach ($activities as $item) { ?>
-    <li>
-        <?= var_dump($item->user->username);?>
-    </li>
+   <div>
+        <h3><a href="/activity/view?id=<?=$item->id ?>">Название: <?= $item->title ?></a></h3>
+        <p>Описание события: <?= $item->description ?></p>
+        <p>Дата начала: <?= $item->dayStart ?></p>
+        <p>Дата окончания: <?= $item->dayEnd ?></p>
+   </div>
 <?php } ?>
-</ul>
+
 
 
 <?php $form = ActiveForm::begin([
