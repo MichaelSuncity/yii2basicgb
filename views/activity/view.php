@@ -22,13 +22,7 @@ use yii\helpers\Url;
     <li><strong>Окончание: </strong><?= $model['dayEnd']?></li>
 </ul>
 
-<?php $form = ActiveForm::begin([
-    'action' => '/activity/create',
-])?>
-
-    <p><?= Html::submitButton('Редактировать событие', ['class' => 'btn btn-success']) ?></p>
-
-<?php ActiveForm::end()?>
+<p><?= Html::a('Редактировать событие', "/activity/edit?id={$model['id']}", ['class' => 'btn btn-success'] )  ?></p>
 
     <p><?= Html::a('Вернуться в мои события', Url::to(['/activity/index']) ) ?></p>
     <p><?= Html::a('Вернуться в календарь', Url::to(['/calendar']) ) ?></p>
