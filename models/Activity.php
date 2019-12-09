@@ -3,6 +3,7 @@
 
 namespace app\models;
 
+use yii\behaviors\BlameableBehavior;
 use yii\db\ActiveRecord;
 
 /**
@@ -25,6 +26,18 @@ use yii\db\ActiveRecord;
 
 class Activity extends ActiveRecord
 {
+
+    public function behaviors()
+    {
+       // return BlameableBehavior::class;
+        return [
+            [
+                'class' => BlameableBehavior::class,
+                'createdByAttribute' => 'userID',
+                'updatedByAttribute' => 'userID',
+            ],
+        ];
+    }
 
     public static function tableName()
     {
@@ -49,7 +62,7 @@ class Activity extends ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'dayStart', 'userID', 'description'], 'required'],
+            [['title', 'dayStart', 'description'], 'required'],
             [['title', 'description'], 'string'],
             [['title'], 'string', 'min' => 2, 'max' => 160],
             [['description'], 'string', 'min'=> 5],

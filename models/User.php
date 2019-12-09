@@ -4,6 +4,7 @@
 namespace app\models;
 
 
+use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
@@ -23,6 +24,16 @@ use yii\web\IdentityInterface;
 
 class User extends ActiveRecord implements IdentityInterface
 {
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
+           /* [
+                'class' => TimestampBehavior::class,
+                'updatedAtAttribute' => 'last_change_at'
+            ],*/
+        ];
+    }
 
     public static function tableName()
     {

@@ -5,6 +5,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Activity;
+use yii\data\ActiveDataProvider;
 use yii\db\Query;
 use yii\db\QueryBuilder;
 use yii\filters\AccessControl;
@@ -20,11 +21,12 @@ class ActivityController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class, //ACF
-                'only' => ['index', 'view', 'create'],
+                //'only' => ['index', 'view', 'create'],
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => ['admin']
+                        'actions' => ['index', 'create', 'view', 'update', 'delete', 'submit'],
+                        'roles' => ['@']
                     ],
                 ],
             ],
@@ -50,20 +52,28 @@ class ActivityController extends Controller
         ->select('*')
         ->from('activities');
     */
-    $query = Activity::find();
+    /*$query = Activity::find();
 
     if($sort) {
         $query->orderBy("id desc");
     }
 
     $rows = $query->all();
+    */
+    $query = Activity::find();
+    $provider = new ActiveDataProvider([
+       'query' => $query,
+        'pagination' => [
+            'validatePage' => false,
+        ]
+    ]);
 
     return $this->render('index', [
-        'activities' => $rows
+        'provider' => $provider
     ]);
     }
 
-    public function actionView($id) {
+    public function actionView(int $id) {
        /*$model = new Activity([
            'title'  => 'Событие № 1',
            'dayStart' => '28.11.2019 г.',
@@ -74,12 +84,13 @@ class ActivityController extends Controller
            'userID' => 1,
        ]);*/
 
-       $db =Yii::$app->db;
+       /*$db =Yii::$app->db;
 
        $model = $db->createCommand('select * from activities where id=:id', [
            ':id' => $id,
-       ])->queryOne();
+       ])->queryOne();*/
 
+        $model = Activity::findOne($id);
         return $this->render('view',
             compact('model'));
     }
@@ -91,7 +102,7 @@ class ActivityController extends Controller
         );
      }
 
-    public function actionEdit(int $id = null)
+    public function actionUpdate(int $id = null)
     {
         if(!empty($id)){
             $model = Activity::findOne($id);

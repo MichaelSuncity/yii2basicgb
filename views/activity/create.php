@@ -10,6 +10,7 @@ use yii\helpers\Url;
  * @var  Activity $model
  */
 // $form->field($model, 'attachments[]')->fileInput(['multiple' => true])
+//<?= $form->field($model, 'userID')->textInput(['autocomplete' => 'off']) 
 ?>
 
 <h1>Создать событие</h1>
@@ -20,7 +21,6 @@ use yii\helpers\Url;
 <?= $form->field($model, 'title')->textInput(['autocomplete' => 'off']) ?>
 <?= $form->field($model, 'dayStart')->textInput(['type' => 'date']) ?>
 <?= $form->field($model, 'dayEnd')->textInput(['type' => 'date']) ?>
-<?= $form->field($model, 'userID')->textInput(['autocomplete' => 'off']) ?>
 <?= $form->field($model, 'description')->textarea(['rows' => 5]) ?>
 <?= $form->field($model, 'cycle')->checkbox() ?>
 <?= $form->field($model, 'isBlocked')->checkbox() ?>
