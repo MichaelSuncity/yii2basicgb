@@ -13,14 +13,14 @@ class m191202_084111_create_activities_table extends Migration
     public function safeUp()
     {
         $this->createTable('activities', [
-            'id' => $this->primaryKey(),
-            'title' => $this -> string()->notNull(),
-            'dayStart' => $this ->string(),
-            'dayEnd' => $this -> string(),
-            'userID' => $this -> integer(),
-            'description' => $this -> text(),
-            'cycle' => $this -> boolean(),
-            'isBlocked' => $this -> boolean(),
+            'id' => $this->primaryKey()->comment('Порядковый номер'),
+            'title' => $this -> string()->notNull()->comment('Название события'),
+            'dayStart' => $this ->string()->comment('Дата начала'),
+            'dayEnd' => $this -> string()->comment('Дата окончания'),
+            'userID' => $this -> integer()->comment('Создатель события'),
+            'description' => $this -> text()->comment('Описание события'),
+            'cycle' => $this -> boolean()->comment('Может ли повторяться'),
+            'isBlocked' => $this -> boolean()->comment('Блокирует ли даты'),
         ]);
 
         $this->addForeignKey(
@@ -40,6 +40,7 @@ class m191202_084111_create_activities_table extends Migration
      */
     public function safeDown()
     {
+        $this->dropForeignKey('fk-activity-userID', 'activities');
         $this->dropTable('activities');
     }
 }

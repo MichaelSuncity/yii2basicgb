@@ -13,13 +13,13 @@ class m191202_083824_create_users_table extends Migration
     public function safeUp()
     {
         $this->createTable('users', [
-            'id' => $this->primaryKey(),
-            'username' => $this->string()->notNull(),
-            'password_hash' => $this->string()->notNull(),
-            'auth_key' => $this->string()->notNull(),
-            'access_token' => $this->string()->notNull(),
-            'created_at' => $this->integer(),
-            'updated_at' => $this->integer(),
+            'id' => $this->primaryKey()->comment('Номер пользователя'),
+            'username' => $this->string()->notNull()->comment('Логин'),
+            'password_hash' => $this->string()->notNull()->comment('Хеш пароля'),
+            'auth_key' => $this->string()->notNull()->comment('Ключ аутентификации'),
+            'access_token' => $this->string()->notNull()->comment('Ключ мгновенного доступа'),
+            'created_at' => $this->integer()->comment('Дата создания записи'),
+            'updated_at' => $this->integer()->comment('Дата последнего редактирования'),
         ]);
     }
 

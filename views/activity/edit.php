@@ -14,7 +14,7 @@ use yii\helpers\Url;
 
 <h1>Редактирование события</h1>
 <?php $form = ActiveForm::begin([
-    'action' => "/activity/edit?id=$model->id",
+    'action' => "/activity/update?id=$model->id",
 ])?>
 
 <?= $form->field($model, 'title')->textInput(['autocomplete' => 'off']) ?>
