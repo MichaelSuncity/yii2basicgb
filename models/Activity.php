@@ -4,6 +4,7 @@
 namespace app\models;
 
 use yii\behaviors\BlameableBehavior;
+use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 
 /**
@@ -36,6 +37,7 @@ class Activity extends ActiveRecord
                 'createdByAttribute' => 'userID',
                 'updatedByAttribute' => 'userID',
             ],
+            TimestampBehavior::class,
         ];
     }
 

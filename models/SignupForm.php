@@ -40,10 +40,10 @@ class SignupForm extends Model
             $user->setPassword($this->password);
             $user->generateAuthKey();
 
-
-            if($user->save()){
+            $user->save();
+            /*if($user->save()){
                 return Yii::$app->user->login($user);
-            }
+            }*/
             /*$user->save(false);
 
             // нужно добавить следующие три строки:

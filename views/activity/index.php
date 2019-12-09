@@ -41,7 +41,8 @@ $columns = [
     [
         'label' => 'Имя создателя',
         'attribute' => 'userID',
-        'value' => function (Activity $model){
+        'value' => function (Activity $model)
+        {
             return $model->user->username;
         }
     ],
