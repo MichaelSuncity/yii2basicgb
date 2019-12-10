@@ -61,10 +61,17 @@ class ActivityController extends Controller
     $rows = $query->all();
     */
     $query = Activity::find();
+
+    if (!Yii::$app->user->can('admin')){
+        $query->andWhere(['userID'=>Yii::$app->user->id]);
+    }
+
+
     $provider = new ActiveDataProvider([
        'query' => $query,
         'pagination' => [
             'validatePage' => false,
+            'pageSize' => 5,
         ]
     ]);
 
