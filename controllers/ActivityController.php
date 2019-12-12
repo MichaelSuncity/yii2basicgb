@@ -96,8 +96,14 @@ class ActivityController extends Controller
        $model = $db->createCommand('select * from activities where id=:id', [
            ':id' => $id,
        ])->queryOne();*/
+        $cacheKey = "activity_{$id}";
+        if(Yii::$app->cache->exists($cacheKey)){
+            $model = Yii::$app->cache->get($cacheKey);
+        } else {
+            $model = Activity::findOne($id);
+            Yii::$app->cache->set($cacheKey, $model);
+        }
 
-        $model = Activity::findOne($id);
         return $this->render('view',
             compact('model'));
     }

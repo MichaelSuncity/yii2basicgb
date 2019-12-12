@@ -33,17 +33,23 @@ class SignupForm extends Model
         if ($this->validate()) {
             $user = new User([
                 'username' => $this->username,
-                'access_token' => 'test',
+                'access_token' => "{$this->username}-token",
                 //'created_at' => time(),
                 //'updated_at' => time(),
             ]);
             $user->setPassword($this->password);
             $user->generateAuthKey();
 
-            $user->save();
+            if ($user->save()) {
+                $auth = Yii::$app->authManager;
+                $role = $auth->getRole('user');
+                $auth->assign($role, $user->id);
+                return Yii::$app->user->login($user);
+            }
+        }
             /*if($user->save()){
                 return Yii::$app->user->login($user);
-            }*/
+            }/*
             /*$user->save(false);
 
             // нужно добавить следующие три строки:
@@ -52,9 +58,9 @@ class SignupForm extends Model
             $auth->assign($authorRole, $user->getId());
 
             return $user;*/
-        }
 
-        return null;
+
+        return false;
     }
 
 }
