@@ -17,6 +17,8 @@ class CachedRecordBehavior extends Behavior
     {
         return [
             ActiveRecord::EVENT_AFTER_UPDATE => 'clearCache',
+            ActiveRecord::EVENT_AFTER_DELETE => 'clearCache',
+            ActiveRecord::EVENT_AFTER_INSERT => 'clearCache'
         ];
     }
 

@@ -2,7 +2,9 @@
 
 namespace app\controllers;
 
+use app\models\Activity;
 use app\models\SignupForm;
+use app\models\UpdateUserForm;
 use Yii;
 use app\models\User;
 use yii\data\ActiveDataProvider;
@@ -39,7 +41,12 @@ class UserController extends Controller
                     [
                         'allow' => true,
                         'actions' => ['index', 'create', 'view', 'delete', 'submit'],
-                        'roles' => ['admin']
+                        'roles' => ['admin'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['profile'],
+                        'roles' => ['@'],
                     ],
                 ],
             ],
@@ -141,5 +148,22 @@ class UserController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionProfile()
+    {
+        $user = Yii::$app->user->identity;
+        $provider = new ActiveDataProvider([
+            'query' => Activity::find()->where(['userID' => $user->id]),
+        ]);
+        $model = new UpdateUserForm(
+            $user->toArray(['username'])
+        );
+
+        if ($model->load(Yii::$app->request->post()) && $model->update($user)){
+            Yii::$app->session->setFlash('success', 'Изменения успешно сохранены');
+        }
+
+        return $this->render('profile', compact('model', 'provider'));
     }
 }

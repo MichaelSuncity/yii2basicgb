@@ -4,6 +4,7 @@
 namespace app\models;
 
 
+use app\components\CachedRecordBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
@@ -28,6 +29,10 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             TimestampBehavior::class,
+            [
+                'class' => CachedRecordBehavior::class,
+                'prefix' => 'user',
+            ],
            /* [
                 'class' => TimestampBehavior::class,
                 'updatedAtAttribute' => 'last_change_at'

@@ -5,13 +5,16 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Activity;
+use yii\caching\DbDependency;
 use yii\data\ActiveDataProvider;
 use yii\db\Query;
 use yii\db\QueryBuilder;
+use yii\filters\PageCache;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\helpers\VarDumper;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
 
 class ActivityController extends Controller
@@ -28,6 +31,15 @@ class ActivityController extends Controller
                         'actions' => ['index', 'create', 'view', 'update', 'delete', 'submit'],
                         'roles' => ['@']
                     ],
+                ],
+            ],
+            [
+                'class' => PageCache::class,
+                'only' => ['index'],
+                'duration' => 120,
+                'dependency' => [
+                    'class' => DbDependency::class,
+                    'sql' => 'SELECT COUNT(*) FROM activities',
                 ],
             ],
         ];
@@ -104,8 +116,12 @@ class ActivityController extends Controller
             Yii::$app->cache->set($cacheKey, $model);
         }
 
-        return $this->render('view',
-            compact('model'));
+        if (Yii::$app->user->can('manager') || Yii::$app->user->can('admin') || $model->userID == Yii::$app->user->id) {
+            return $this->render('view',
+                compact('model'));
+        }  else {
+            throw new NotFoundHttpException();
+        }
     }
 
     public function actionCreate(){
@@ -117,16 +133,31 @@ class ActivityController extends Controller
 
     public function actionUpdate(int $id = null)
     {
-        if(!empty($id)){
-            $model = Activity::findOne($id);
-            if($model->load(Yii::$app->request->post()) and $model->validate()){
-                if($model->save()) {
-                    return $this->redirect(["activity/view?id=$model->id"]);
+            if (!empty($id)) {
+                $model = Activity::findOne($id);
+                if ($model->userID == Yii::$app->user->id) {
+                    if ($model->load(Yii::$app->request->post()) and $model->validate()) {
+                    if ($model->save()) {
+                        return $this->redirect(["activity/view?id=$model->id"]);
+                    }
                 }
+                return $this->render('edit', [
+                    'model' => $model
+                ]);
+            } else {
+                    throw new NotFoundHttpException();
             }
-            return $this->render('edit', [
-                'model' => $model
-            ]);
+        }
+    }
+
+    public function actionDelete(int $id )
+    {
+        $model = Activity::findOne($id);
+        if (Yii::$app->user->can('manager') || Yii::$app->user->can('admin') || $model->userID == Yii::$app->user->id) {
+            $model->delete();
+            return $this->redirect(['index']);
+        }else{
+            throw new NotFoundHttpException();
         }
     }
 
