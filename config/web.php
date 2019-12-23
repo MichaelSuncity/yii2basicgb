@@ -12,6 +12,8 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
+    'defaultRoute' => 'calendar',
+    //'catchAll' =>['site/about'],
     'modules' => [
         'first' => [
             'class' => 'app\modules\first\Module',
@@ -40,7 +42,8 @@ $config = [
             // send all mails to a file by default. You have to set
             // 'useFileTransport' to false and configure a transport
             // for the mailer to send real emails.
-            'useFileTransport' => true,
+            'useFileTransport' => false,
+            'transport' => Swift_SmtpTransport::class,
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -56,7 +59,13 @@ $config = [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
+            //'enableStrictParsing'=> true,
             'rules' => [
+                '/login' => 'site/login',
+                '/users'=> 'user/index',
+                'user/<id:\d+>' => 'user/view',
+                'profile' => 'user/profile',
+                '<action:(about|contact|login|index|signup)>' => 'site/<action>',
             ],
         ],
 

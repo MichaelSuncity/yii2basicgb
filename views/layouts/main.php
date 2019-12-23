@@ -9,8 +9,10 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
+use app\assets\CalendarAsset;
 
 AppAsset::register($this);
+CalendarAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -40,7 +42,7 @@ AppAsset::register($this);
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'Calendar', 'url' => ['/calendar']],
-            ['label' => 'About', 'url' => ['/site/about']],
+            ['label' => 'Profile', 'url' => ['/user/profile']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
             ['label' => 'Users', 'url' => ['/user/index']],
             ['label' => 'Signup', 'url' => ['/site/signup']],

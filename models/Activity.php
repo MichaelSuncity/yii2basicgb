@@ -7,6 +7,8 @@ use app\components\CachedRecordBehavior;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use Yii;
+use yii\helpers\Url;
 
 /**
  * Class Activity
@@ -102,11 +104,25 @@ class Activity extends ActiveRecord
 
     public static function findOne($condition)
     {
-        if(\Yii::$app->cache->exists('activity_'.$condition)){
-            //
+        if(Yii::$app->cache->exists('activity_'.$condition)){
+            return Yii::$app->cache->get('activity_'.$condition);
         }else{
-            $model = parent::findOne();
+            $model = parent::findOne($condition);
+            Yii::$app->cache->set('activity_'.$condition, $model);
+            return $model;
         }
-        return $model;
+        //return $model;
     }
+
+    public function toEvent()
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'start' => $this->dayStart,
+            'end' => $this->dayEnd,
+            'url' => Url::to(['/activity/view', 'id' => $this->id]),
+        ];
+    }
+
 }
